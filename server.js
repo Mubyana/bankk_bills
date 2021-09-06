@@ -17,13 +17,6 @@ const mongoose = require('mongoose');
 
 //var Schema = mongoose.Schema;
 
-const options = {
-  reconnectTries: 60,
-  reconnectInterval: 2000,
-  auto_reconnect: true
-
-}
-
 var connection_url = "";
 //var url ="mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate-mongo?retryWrites=true&w=majority";
 
@@ -34,7 +27,7 @@ var port = 3400;
 var connection_url = "169.57.56.202:30659";
 //
 var url = "mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate?retryWrites=true&w=majority";
-MongoClient.connect(url,options, function(err, mongoclient) {
+MongoClient.connect(url, function(err, mongoclient) {
   if(err) {
     console.log("Mongo DB connection failed");
     return console.dir(err);
@@ -55,15 +48,7 @@ app.post('/api/bills/create', function (req, res) {
 
     var url = "mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate?retryWrites=true&w=majority";
 
-
-    const options = {
-      reconnectTries: 60,
-      reconnectInterval: 2000,
-      auto_reconnect: true
-
-    }
-
-    MongoClient.connect(url,options, function(err, mongoclient) {
+    MongoClient.connect(url, function(err, mongoclient) {
     if(err) {
       console.log("Mongo DB connection failed");
       return console.dir(err);
