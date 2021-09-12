@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
+const cors = require('cors');
+
 //const bills = require('./mongoose/account');
 
 
@@ -10,12 +12,28 @@ app.use(bodyParser.json());
 app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+app.use(cors({credentials: true, origin: true}))
+
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 const mongoose = require('mongoose');
 
 //var Schema = mongoose.Schema;
+
+const options = {
+  reconnectTries: 60,
+  reconnectInterval: 2000,
+  auto_reconnect: true
+
+}
 
 var connection_url = "";
 //var url ="mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate-mongo?retryWrites=true&w=majority";
@@ -27,7 +45,7 @@ var port = 3400;
 var connection_url = "169.57.56.202:30659";
 //
 var url = "mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate?retryWrites=true&w=majority";
-MongoClient.connect(url, function(err, mongoclient) {
+MongoClient.connect(url,options, function(err, mongoclient) {
   if(err) {
     console.log("Mongo DB connection failed");
     return console.dir(err);
@@ -48,7 +66,15 @@ app.post('/api/bills/create', function (req, res) {
 
     var url = "mongodb+srv://admin:admin@cluster0.7mgnx.mongodb.net/innovate?retryWrites=true&w=majority";
 
-    MongoClient.connect(url, function(err, mongoclient) {
+
+    const options = {
+      reconnectTries: 60,
+      reconnectInterval: 2000,
+      auto_reconnect: true
+
+    }
+
+    MongoClient.connect(url,options, function(err, mongoclient) {
     if(err) {
       console.log("Mongo DB connection failed");
       return console.dir(err);
